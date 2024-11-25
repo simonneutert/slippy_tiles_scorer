@@ -27,7 +27,7 @@ class ClusterTest < Test::Unit::TestCase
     assert_equal(%i[clusters cluster_tiles], result.keys)
 
     assert(result[:clusters].is_a?(Array))
-    assert(result[:clusters].first.is_a?(Set))
+    assert(result[:clusters].first.is_a?(Array))
     assert(result[:clusters].first.first.is_a?(Array))
     assert(result[:clusters].first.first.size == 2)
     assert(result[:clusters].first.first.first.is_a?(Integer))
