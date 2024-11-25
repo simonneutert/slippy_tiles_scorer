@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
 
   spec.summary = "A gem to score a set of slippy tiles."
   spec.description = "For a given set of slippy tiles, this gem calculates the score of the tiles, like total tiles, clusters and max squares."
-  spec.homepage = "TODO: Put your gem's website or public repo URL here."
+  spec.homepage = "https://github.com/simonneutert/slippy_tiles_scorer"
   spec.required_ruby_version = ">= 3.0.0"
 
   # spec.metadata["allowed_push_host"] = "TODO: Set to your gem server 'https://example.com'"
