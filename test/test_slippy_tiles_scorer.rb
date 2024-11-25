@@ -164,7 +164,7 @@ class MainTest < Test::Unit::TestCase # rubocop:disable Metrics/ClassLength
     stub_tiles_x_y(service: @service, size: 50)
     result_clusters = @service.clusters
     assert(result_clusters[:clusters].is_a?(Array))
-    assert(result_clusters[:clusters].first.is_a?(Set))
+    assert(result_clusters[:clusters].first.is_a?(Array))
     assert(result_clusters[:clusters].first.first.is_a?(Array))
     assert(result_clusters[:clusters].first.first.size == 2)
     assert_equal([0, 0], result_clusters[:clusters].first.first)
@@ -184,7 +184,7 @@ class MainTest < Test::Unit::TestCase # rubocop:disable Metrics/ClassLength
     stub_tiles_x_y(service: @service, size: 50)
     result_clusters = @service.clusters
     assert(result_clusters[:clusters_of_cluster_tiles].is_a?(Array))
-    assert(result_clusters[:clusters_of_cluster_tiles].first.is_a?(Set))
+    assert(result_clusters[:clusters_of_cluster_tiles].first.is_a?(Array))
     assert(result_clusters[:clusters_of_cluster_tiles].first.first.is_a?(Array))
     assert(result_clusters[:cluster_tiles].first.first.is_a?(Integer))
     assert(result_clusters[:cluster_tiles].first.last.is_a?(Integer))

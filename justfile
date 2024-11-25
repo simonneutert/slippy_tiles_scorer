@@ -1,2 +1,2 @@
 test:
-  ruby test/runner.rb
+  ruby test_runner.rb
