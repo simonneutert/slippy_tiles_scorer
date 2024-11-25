@@ -1,5 +1,12 @@
 # SlippyTilesScorer
 
+> [!NOTE]  
+> This gem's API is not considered stable yet.
+> Things might change in the future.
+
+[![Gem Version](https://badge.fury.io/rb/slippy_tiles_scorer.svg)](https://badge.fury.io/rb/slippy_tiles_scorer) \
+[![Ruby](https://github.com/simonneutert/slippy_tiles_scorer/actions/workflows/main.yml/badge.svg)](https://github.com/simonneutert/slippy_tiles_scorer/actions/workflows/main.yml)
+
 Calculate scores of map tiles (x, y) on a map. The scores are total, (max)
 clusters, and max squares.
 
@@ -41,7 +48,7 @@ collection_of_tiles.add([2, 0])
 collection_of_tiles.add([2, 1])
 collection_of_tiles.add([2, 2])
 
-tile_scorer = SlippyTilesScorer::Scorer.new(tiles_x_y: collection_of_tiles)
+tile_scorer = SlippyTilesScorer::Score.new(tiles_x_y: collection_of_tiles)
 tile_scorer.valid? # => true
 
 # the collection_of_tiles is a 3x3 map and will be used to calculate scores,
@@ -70,7 +77,7 @@ An more computationally optimized example of how to use the `TileScorer` class, 
 
 ```ruby
 ### OPTIMIZE COMPUTATION ###
-tile_scorer = SlippyTilesScorer::Scorer.new(tiles_x_y: collection_of_tiles)
+tile_scorer = SlippyTilesScorer::Score.new(tiles_x_y: collection_of_tiles)
 # Optimize computation by calculating clusters first,
 result_clusters = tile_scorer.clusters
 clusters = result_clusters[:clusters]
