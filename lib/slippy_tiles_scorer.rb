@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
+require "set"
 require_relative "slippy_tiles_scorer/version"
-require_relative "./slippy_tiles_scorer/cluster"
-require_relative "./slippy_tiles_scorer/max_square"
+require_relative "slippy_tiles_scorer/cluster"
+require_relative "slippy_tiles_scorer/max_square"
 
 module SlippyTilesScorer
   class Error < StandardError; end
@@ -17,11 +18,9 @@ module SlippyTilesScorer
 
     def valid?
       return true if @tiles_x_y.empty?
-
       raise ArgumentError, "@tiles_x_y must be a Set" unless @tiles_x_y.is_a?(Set)
 
-      set_of_arrays?
-      set_of_arrays_of_integers?
+      set_of_arrays? && set_of_arrays_of_integers?
     end
 
     def clusters(tiles_x_y: @tiles_x_y)
@@ -32,7 +31,7 @@ module SlippyTilesScorer
       result
     end
 
-    def max_square(x:, y:, tiles_x_y: @tiles_x_y) # rubocop:disable Naming/MethodParameterName
+    def max_square(x:, y:, tiles_x_y: @tiles_x_y)
       SlippyTilesScorer::MaxSquare.new(tiles_x_y: tiles_x_y).max_square(x: x, y: y)
     end
 
@@ -40,7 +39,7 @@ module SlippyTilesScorer
       SlippyTilesScorer::MaxSquare.new(tiles_x_y: tiles_x_y).max_squares(min_size: min_size)
     end
 
-    def steps_fulfilled?(x:, y:, steps:) # rubocop:disable Naming/MethodParameterName
+    def steps_fulfilled?(x:, y:, steps:)
       SlippyTilesScorer::MaxSquare.new(tiles_x_y: @tiles_x_y).steps_fulfilled?(x: x, y: y, steps: steps)
     end
 
@@ -51,13 +50,13 @@ module SlippyTilesScorer
     private
 
     def set_of_arrays?
-      return if @tiles_x_y.all? { |point| point.is_a?(Array) && point.size == 2 }
+      return true if @tiles_x_y.all? { |point| point.is_a?(Array) && point.size == 2 }
 
       raise ArgumentError, "each point must be an array with two elements"
     end
 
     def set_of_arrays_of_integers?
-      return if @tiles_x_y.all? { |point| point.all? { |coord| coord.is_a?(Integer) } }
+      return true if @tiles_x_y.all? { |point| point.all?(Integer) }
 
       raise ArgumentError, "each point must be an array with two integers"
     end

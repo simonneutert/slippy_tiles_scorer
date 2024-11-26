@@ -1,24 +1,15 @@
 # frozen_string_literal: true
 
 require "test/unit"
+require_relative "../../../test_helper"
 
 class ClusterTest < Test::Unit::TestCase
   def setup
     @service = SlippyTilesScorer::Cluster.new
   end
 
-  def stub_tiles_x_y(service:, size: 50)
-    service.tiles_x_y = Set.new
-    (0...size).each do |i|
-      (0...size).each do |j|
-        service.tiles_x_y.add([i, j])
-      end
-    end
-    service
-  end
-
   def test_return_values_cluster_service # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
-    stub_tiles_x_y(service: @service, size: 100)
+    SlippyTilesScorer::TestHelper.stub_tiles_x_y(service: @service, size: 100)
     assert_equal(10_000, @service.tiles_x_y.length)
     result = @service.clusters
 
