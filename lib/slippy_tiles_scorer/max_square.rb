@@ -7,11 +7,7 @@ module SlippyTilesScorer
 
     def initialize(tiles_x_y: Set.new)
       @tiles_x_y = tiles_x_y
-      @tiles_lut = {}
-      @tiles_x_y.each do |(x, y)|
-        @tiles_lut[x] ||= {}
-        @tiles_lut[x][y] = true
-      end
+      @tiles_lut = nil
     end
 
     # @param min_size [Integer] The minimum size of the square, should be 3 or greater.
@@ -36,6 +32,7 @@ module SlippyTilesScorer
           track_result(result: result, steps: steps, x: x, y: y)
         end
       end
+      @tiles_lut = nil
       result
     end
 
@@ -56,6 +53,13 @@ module SlippyTilesScorer
     private
 
     def in_lut?(x:, y:)
+      unless @tiles_lut
+        @tiles_lut = {}
+        @tiles_x_y.each do |(x, y)|
+          @tiles_lut[x] ||= {}
+          @tiles_lut[x][y] = true
+        end
+      end
       @tiles_lut.dig(x, y)
     end
 

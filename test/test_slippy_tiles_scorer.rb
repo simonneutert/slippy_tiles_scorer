@@ -44,13 +44,13 @@ class MainTest < Test::Unit::TestCase # rubocop:disable Metrics/ClassLength
 
   def test_coll_empty
     assert_equal(0, @service.tiles_x_y.length)
-    assert_equal({ size: 3, top_left_tile_x_y: Set.new }, @service.max_squares)
+    assert_equal({ size: 0, top_left_tile_x_y: Set.new }, @service.max_squares)
   end
 
   def test_max_square_no_entries_big_enough
     stub_tiles_x_y(service: @service, size: 1)
     result = @service.max_squares
-    assert_equal(3, result[:size])
+    assert_equal(0, result[:size])
     assert_equal(0, result[:top_left_tile_x_y].length)
   end
 
