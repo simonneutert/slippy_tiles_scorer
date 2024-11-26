@@ -1,27 +1,18 @@
 # frozen_string_literal: true
 
 require "test/unit"
+require_relative "../test_helper"
 
 class MainTest < Test::Unit::TestCase # rubocop:disable Metrics/ClassLength
   def setup
     @service = SlippyTilesScorer::Score.new
   end
 
-  def stub_tiles_x_y(service:, size: 50)
-    service.tiles_x_y = Set.new
-    (0...size).each do |i|
-      (0...size).each do |j|
-        service.tiles_x_y.add([i, j])
-      end
-    end
-    service
-  end
-
   # def teardown
   # end
 
   def test_editable_coll
-    stub_tiles_x_y(service: @service, size: 100)
+    SlippyTilesScorer::TestHelper.stub_tiles_x_y(service: @service, size: 100)
     assert_equal(10_000, @service.tiles_x_y.length)
 
     @service.tiles_x_y.delete([5, 5])
@@ -29,7 +20,7 @@ class MainTest < Test::Unit::TestCase # rubocop:disable Metrics/ClassLength
   end
 
   def test_steps_fulfilled_collection_full # rubocop:disable Metrics/AbcSize
-    stub_tiles_x_y(service: @service, size: 100)
+    SlippyTilesScorer::TestHelper.stub_tiles_x_y(service: @service, size: 100)
     assert_equal(10_000, @service.tiles_x_y.length)
 
     assert(@service.send(:steps_fulfilled?, x: 0, y: 0, steps: 2))
@@ -48,14 +39,14 @@ class MainTest < Test::Unit::TestCase # rubocop:disable Metrics/ClassLength
   end
 
   def test_max_square_no_entries_big_enough
-    stub_tiles_x_y(service: @service, size: 1)
+    SlippyTilesScorer::TestHelper.stub_tiles_x_y(service: @service, size: 1)
     result = @service.max_squares
     assert_equal(0, result[:size])
     assert_equal(0, result[:top_left_tile_x_y].length)
   end
 
   def test_steps_fulfilled_collection_holes
-    stub_tiles_x_y(service: @service, size: 100)
+    SlippyTilesScorer::TestHelper.stub_tiles_x_y(service: @service, size: 100)
     @service.tiles_x_y.delete([5, 5])
 
     assert(@service.send(:steps_fulfilled?, x: 0, y: 0, steps: 2))
@@ -65,7 +56,7 @@ class MainTest < Test::Unit::TestCase # rubocop:disable Metrics/ClassLength
   end
 
   def test_max_steps_collection_with_holes
-    stub_tiles_x_y(service: @service, size: 50)
+    SlippyTilesScorer::TestHelper.stub_tiles_x_y(service: @service, size: 50)
     @service.tiles_x_y.delete([5, 5])
 
     assert_equal(5, @service.max_square(x: 0, y: 0))
@@ -77,7 +68,7 @@ class MainTest < Test::Unit::TestCase # rubocop:disable Metrics/ClassLength
   end
 
   def test_max_steps_collection_with_holes_big
-    stub_tiles_x_y(service: @service, size: 100)
+    SlippyTilesScorer::TestHelper.stub_tiles_x_y(service: @service, size: 100)
     @service.tiles_x_y.delete([5, 5])
     result = @service.max_squares
     assert_equal(94, result[:size])
@@ -86,7 +77,7 @@ class MainTest < Test::Unit::TestCase # rubocop:disable Metrics/ClassLength
 
   def test_clusters_easy # rubocop:disable Metrics/AbcSize,Metrics/MethodLength
     cluster_size = 50
-    stub_tiles_x_y(service: @service, size: cluster_size)
+    SlippyTilesScorer::TestHelper.stub_tiles_x_y(service: @service, size: cluster_size)
     assert_equal(2500, @service.tiles_x_y.length)
     # divide vertically at x==20
     (0..cluster_size).each { |i| @service.tiles_x_y.delete([20, i]) }
@@ -103,7 +94,7 @@ class MainTest < Test::Unit::TestCase # rubocop:disable Metrics/ClassLength
   end
 
   def test_clusters_triple # rubocop:disable Metrics/AbcSize,Metrics/MethodLength,Metrics/CyclomaticComplexity,Metrics/PerceivedComplexity
-    stub_tiles_x_y(service: @service, size: 50)
+    SlippyTilesScorer::TestHelper.stub_tiles_x_y(service: @service, size: 50)
     assert_equal(2500, @service.tiles_x_y.length)
 
     (0...50).each do |i|
@@ -141,7 +132,7 @@ class MainTest < Test::Unit::TestCase # rubocop:disable Metrics/ClassLength
     assert_equal([16, 964, 1450], clusters.map(&:size).sort)
     assert_equal(3, clusters.size)
     assert_equal(2104, cluster_tiles.size)
-    assert(cluster_tiles.length == clusters_of_cluster_tiles.map(&:size).sum)
+    assert(cluster_tiles.length == clusters_of_cluster_tiles.sum(&:size))
     assert_equal([4, 804, 1296], clusters_of_cluster_tiles.map(&:size).sort)
 
     # calculate max squares
@@ -153,7 +144,7 @@ class MainTest < Test::Unit::TestCase # rubocop:disable Metrics/ClassLength
   end
 
   def test_return_values_cluster_service
-    stub_tiles_x_y(service: @service, size: 50)
+    SlippyTilesScorer::TestHelper.stub_tiles_x_y(service: @service, size: 50)
     result_clusters = @service.clusters
     assert(result_clusters.key?(:clusters))
     assert(result_clusters.key?(:cluster_tiles))
@@ -161,7 +152,7 @@ class MainTest < Test::Unit::TestCase # rubocop:disable Metrics/ClassLength
   end
 
   def test_return_values_cluster_service_for_clusters # rubocop:disable Metrics/AbcSize
-    stub_tiles_x_y(service: @service, size: 50)
+    SlippyTilesScorer::TestHelper.stub_tiles_x_y(service: @service, size: 50)
     result_clusters = @service.clusters
     assert(result_clusters[:clusters].is_a?(Array))
     assert(result_clusters[:clusters].first.is_a?(Array))
@@ -171,7 +162,7 @@ class MainTest < Test::Unit::TestCase # rubocop:disable Metrics/ClassLength
   end
 
   def test_return_values_cluster_service_for_cluster_tiles # rubocop:disable Metrics/AbcSize
-    stub_tiles_x_y(service: @service, size: 50)
+    SlippyTilesScorer::TestHelper.stub_tiles_x_y(service: @service, size: 50)
     result_clusters = @service.clusters
     assert(result_clusters[:cluster_tiles].is_a?(Set))
     assert(result_clusters[:cluster_tiles].first.is_a?(Array))
@@ -181,7 +172,7 @@ class MainTest < Test::Unit::TestCase # rubocop:disable Metrics/ClassLength
   end
 
   def test_return_values_cluster_service_for_clusters_of_cluster_tiles # rubocop:disable Metrics/AbcSize
-    stub_tiles_x_y(service: @service, size: 50)
+    SlippyTilesScorer::TestHelper.stub_tiles_x_y(service: @service, size: 50)
     result_clusters = @service.clusters
     assert(result_clusters[:clusters_of_cluster_tiles].is_a?(Array))
     assert(result_clusters[:clusters_of_cluster_tiles].first.is_a?(Array))

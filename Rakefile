@@ -6,4 +6,7 @@ RuboCop::RakeTask.new
 
 task default: %i[test rubocop]
 
-# TODO: add more tasks here
+desc "Run tests"
+task :test do
+  sh "ruby test_runner.rb"
+end
