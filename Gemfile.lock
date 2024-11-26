@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    slippy_tiles_scorer (0.0.2)
+    slippy_tiles_scorer (0.0.3)
 
 GEM
   remote: https://rubygems.org/
