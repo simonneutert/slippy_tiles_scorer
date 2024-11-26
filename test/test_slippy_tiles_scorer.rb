@@ -202,9 +202,9 @@ class MainTest < Test::Unit::TestCase # rubocop:disable Metrics/ClassLength
     collection_of_tiles.add([2, 1])
     collection_of_tiles.add([2, 2])
     assert_equal(9, collection_of_tiles.length)
-    # puts Score.new(tiles_x_y collection_of_tiles).clusters
-    # puts Score.new(tiles_x_y collection_of_tiles).max_squares
-    # puts Score.new(tiles_x_y collection_of_tiles).max_squares(min_size: 4)
+    # puts SlippyTilesScorer::Score.new(tiles_x_y: collection_of_tiles).clusters
+    # puts SlippyTilesScorer::Score.new(tiles_x_y: collection_of_tiles).max_squares
+    # puts SlippyTilesScorer::Score.new(tiles_x_y: collection_of_tiles).max_squares(min_size: 4)
 
     tile_scorer = SlippyTilesScorer::Score.new(tiles_x_y: collection_of_tiles)
     result_clusters = tile_scorer.clusters

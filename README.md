@@ -60,15 +60,17 @@ tile_scorer.visited # => 9
 tile_scorer.clusters # => 
     #   {
     #       :clusters=>[
-    #           <Set: {[0, 0], [1, 0], [0, 1], [1, 1], [0, 2], [1, 2], [2, 2], [2, 1], [2, 0]}>
+    #           [
+    #             [0, 0], [1, 0], [0, 1], [1, 1], [0, 2], [1, 2], [2, 2], [2, 1], [2, 0]
+    #           ]
     #       ],
     #       :cluster_tiles=>#<Set: {[1, 1]}>,
-    #       :clusters_of_cluster_tiles=>[]
+    #       :clusters_of_cluster_tiles=>[[[1, 1]]]
     #   }
 
 # calculate max squares
-tile_scorer.max_squares # => {:size=>3, top_left_tile_x_y=>#<Set: {[0, 0]}>}
-tile_scorer.max_squares(min_size: 4) # => {:size=>4, top_left_tile_x_y=>#<Set: {}>}
+tile_scorer.max_squares # => {:size=>0, top_left_tile_x_y=>#<Set: {[0, 0]}>}
+tile_scorer.max_squares(min_size: 4) # => {:size=>0, top_left_tile_x_y=>#<Set: {}>}
 ```
 
 ### Optimized
