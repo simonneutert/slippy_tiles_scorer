@@ -35,7 +35,7 @@ Find some examples below.
 A simple example of how to use the `TileScorer` class, when tinkering in a REPL.
 
 ```ruby
-require 'tile_scorer'
+require 'slippy_tiles_scorer'
 
 collection_of_tiles = Set.new
 collection_of_tiles.add([0, 0])
