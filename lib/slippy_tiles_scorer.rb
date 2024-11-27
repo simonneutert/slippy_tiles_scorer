@@ -20,7 +20,7 @@ module SlippyTilesScorer
       return true if @tiles_x_y.empty?
       raise ArgumentError, "@tiles_x_y must be a Set" unless @tiles_x_y.is_a?(Set)
 
-      set_of_arrays? && set_of_arrays_of_integers?
+      set_of_arrays_with_two_positive_integers?
     end
 
     def clusters(tiles_x_y: @tiles_x_y)
@@ -49,16 +49,13 @@ module SlippyTilesScorer
 
     private
 
-    def set_of_arrays?
-      return true if @tiles_x_y.all? { |point| point.is_a?(Array) && point.size == 2 }
+    def set_of_arrays_with_two_positive_integers?
+      return true if @tiles_x_y.all? do |points|
+        points.is_a?(Array) && points.size == 2 &&
+        points.all? { |point| point.is_a?(Integer) && point >= 0 }
+      end
 
-      raise ArgumentError, "each point must be an array with two elements"
-    end
-
-    def set_of_arrays_of_integers?
-      return true if @tiles_x_y.all? { |point| point.all?(Integer) }
-
-      raise ArgumentError, "each point must be an array with two integers"
+      raise ArgumentError, "each point must be an array with two integers >= 0"
     end
   end
 end
