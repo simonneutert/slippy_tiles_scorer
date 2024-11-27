@@ -9,6 +9,19 @@ class MaxSquareTest < Test::Unit::TestCase
     @service_max_square = SlippyTilesScorer::MaxSquare.new
   end
 
+  def test_raises_error_when_min_size_too_small
+    assert_raise(ArgumentError) { @service_max_square.max_squares(min_size: 0) }
+    assert_raise(ArgumentError) { @service_max_square.max_squares(min_size: 1) }
+    assert_nothing_raised { @service_max_square.max_squares(min_size: 2) }
+  end
+
+  def test_raises_when_tiles_x_y_negative
+    assert_raise(ArgumentError) do
+      @service_max_square.tiles_x_y = Set[[-1, 0]]
+      @service_max_square.max_squares
+    end
+  end
+
   def test_return_values_max_square_service # rubocop:disable Metrics/AbcSize
     SlippyTilesScorer::TestHelper.stub_tiles_x_y(service: @service_max_square, size: 100)
     assert_equal(10_000, @service_max_square.tiles_x_y.length)

@@ -1,2 +1,5 @@
+default:
+  @just --list
+
 test:
-  ruby test_runner.rb
+  bundle exec rake

@@ -35,7 +35,7 @@ module SlippyTilesScorer
       todo = [start]
       broad_search!(todo, cluster)
 
-      @clusters.push(cluster) if cluster.size.positive?
+      @clusters.push(cluster)
       cluster
     end
 

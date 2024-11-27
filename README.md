@@ -1,16 +1,19 @@
 # SlippyTilesScorer
 
-> [!NOTE]  
-> This gem's API is not considered stable yet.
-> Things might change in the future.
+> [!NOTE]\
+> This gem's API is not considered stable yet. Things might change in the
+> future.
 
-[![Gem Version](https://badge.fury.io/rb/slippy_tiles_scorer.svg)](https://badge.fury.io/rb/slippy_tiles_scorer) \
+[![Gem Version](https://badge.fury.io/rb/slippy_tiles_scorer.svg)](https://badge.fury.io/rb/slippy_tiles_scorer)\
+![Coverage](https://github.com/simonneutert/slippy_tiles_scorer/blob/main/coverage_badge.svg)\
 [![Ruby](https://github.com/simonneutert/slippy_tiles_scorer/actions/workflows/main.yml/badge.svg)](https://github.com/simonneutert/slippy_tiles_scorer/actions/workflows/main.yml)
 
 Calculate scores of map tiles (x, y) on a map. The scores are total, (max)
 clusters, and max squares.
 
 To experiment with that code, run `bin/console` for an interactive prompt.
+
+Supports Ruby >= 3.0, JRuby >= 9.4 and latest TruffleRuby (with GraalVM).
 
 ## Installation
 
@@ -20,7 +23,8 @@ Install the gem and add to the application's Gemfile by executing:
 bundle add slippy_tiles_scorer
 ```
 
-If bundler is not being used to manage dependencies, install the gem by executing:
+If bundler is not being used to manage dependencies, install the gem by
+executing:
 
 ```bash
 gem install slippy_tiles_scorer
@@ -75,7 +79,8 @@ tile_scorer.max_squares(min_size: 4) # => {:size=>0, top_left_tile_x_y=>#<Set: {
 
 ### Optimized
 
-An more computationally optimized example of how to use the `TileScorer` class, when using the code in production.
+An more computationally optimized example of how to use the `TileScorer` class,
+when using the code in production.
 
 ```ruby
 ### OPTIMIZE COMPUTATION ###
@@ -101,10 +106,46 @@ puts max_squares # =>[{:size=>3, top_left_tile_x_y=>#<Set: {[0, 0]}>}]
 
 ## Development
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake test` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+After checking out the repo, run `bin/setup` to install dependencies. Then, run
+`rake test` to run the tests. You can also run `bin/console` for an interactive
+prompt that will allow you to experiment.
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+To install this gem onto your local machine, run `bundle exec rake install`. To
+release a new version, update the version number in `version.rb`, and then run
+`bundle exec rake release`, which will create a git tag for the version, push
+git commits and the created tag, and push the `.gem` file to
+[rubygems.org](https://rubygems.org).
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/simonneutert/slippy_tiles_scorer.
+Bug reports and pull requests are welcome on GitHub at
+https://github.com/simonneutert/slippy_tiles_scorer.
+
+## Release new Gem version
+
+To release a new version of the gem, follow these steps:
+
+### Pre-release
+
+1. Make sure the tests pass and coverage badge is updated: `$ bundle exec rake`.
+2. Update the version number in `lib/slippy_tiles_scorer/version.rb`.
+3. Run `$ bundle install`.
+4. Check the `README.md` for correctness.
+5. Make sure the `CHANGELOG.md` is up to date.
+6. All changes are committed and pushed to the main branch.
+
+### Release
+
+1. Checkout the main branch: `$ git checkout main`.
+2. Run the tests: `$ bundle exec rake` (just for safety).
+3. Run `$ bundle exec rake release`.
+
+### Post-release
+
+Still being on the main branch:
+
+1. Update the version number in `lib/slippy_tiles_scorer/version.rb` to the next
+   development version.
+2. Run `$ bundle install`.
+3. Commit the changes: `$ git commit -am "Bump version to vX.Y.Z"`.
+4. Push the changes: `$ git push`.
