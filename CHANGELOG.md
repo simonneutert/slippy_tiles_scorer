@@ -1,5 +1,6 @@
 ## [Unreleased]
 
+- [#4](https://github.com/simonneutert/slippy_tiles_scorer/pull/4) - Runs a benchmark before running the tests.
 - [#3](https://github.com/simonneutert/slippy_tiles_scorer/pull/3) - 100 % test coverage: lines and branches. Adds a badge to the README. Adds gem release notes to the README.
 
 ## [0.0.3] - 2024-11-26

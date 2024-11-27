@@ -5,6 +5,7 @@ source "https://rubygems.org"
 # Specify your gem's dependencies in slippy_tiles_scorer.gemspec
 gemspec
 
+gem "benchmark", "~> 0.4.0", require: false
 gem "json", "~> 2.8"
 gem "rake", "~> 13.2"
 gem "rubocop", "~> 1.69", require: false

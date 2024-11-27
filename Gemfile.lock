@@ -8,6 +8,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     ast (2.4.2)
+    benchmark (0.4.0)
     docile (1.4.1)
     json (2.8.2)
     json (2.8.2-java)
@@ -67,6 +68,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  benchmark (~> 0.4.0)
   json (~> 2.8)
   rake (~> 13.2)
   rubocop (~> 1.69)
