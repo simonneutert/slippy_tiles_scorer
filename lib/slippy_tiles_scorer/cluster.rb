@@ -3,84 +3,144 @@
 require "set"
 
 module SlippyTilesScorer
-  # finds clusters in a collection/tiles_x_y of points (x, y)
+  # Finds connected clusters in a collection of x/y tiles.
   class Cluster
+    MISSING = Object.new.freeze
+    private_constant :MISSING
+
     attr_accessor :tiles_x_y
 
     def initialize(tiles_x_y: Set.new)
       @tiles_x_y = tiles_x_y
-      @cluster_tiles = Set.new
-      @visited = {}
-      @clusters = []
     end
 
-    # @return [Hash] The clusters and the tiles in the clusters.
-    def clusters
-      @tiles_x_y.each do |i|
-        next if visited?(i[0], i[1])
+    # @return [Hash] The clusters and the tiles surrounded on all four sides.
+    def clusters # rubocop:disable Metrics/MethodLength
+      tile_index = build_tile_index
 
-        visit!(i[0], i[1])
-        find_cluster_around(i)
+      clusters = []
+      cluster_tiles = Set.new
+
+      @tiles_x_y.each do |start|
+        x = start[0]
+        y = start[1]
+
+        row = tile_index[y]
+
+        # nil means this tile was already visited.
+        next unless row && row[x]
+
+        row[x] = nil
+
+        cluster = [start]
+        todo = [start]
+
+        broad_search!(
+          todo,
+          cluster,
+          cluster_tiles,
+          tile_index
+        )
+
+        clusters << cluster
       end
-      { clusters: @clusters, cluster_tiles: @cluster_tiles }
+
+      {
+        clusters: clusters,
+        cluster_tiles: cluster_tiles
+      }
     end
 
     private
 
-    # @param start [Array] The x and y coordinate of the start point.
-    # @return [Array<Array<Integer, Integer>>] The cluster of points.
-    def find_cluster_around(start)
-      cluster = []
-      cluster.push(start)
-      todo = [start]
-      broad_search!(todo, cluster)
+    # Builds a sparse coordinate lookup.
+    #
+    # Values initially contain the original tile Array:
+    #
+    #   {
+    #     y => {
+    #       x => [x, y]
+    #     }
+    #   }
+    #
+    # Once a tile has been scheduled for traversal its value becomes nil.
+    # Hash#key? / Hash#fetch can therefore still distinguish:
+    #
+    #   missing  -> MISSING
+    #   visited  -> nil
+    #   unvisited -> [x, y]
+    #
+    def build_tile_index # rubocop:disable Metrics/MethodLength
+      index = {}
 
-      @clusters.push(cluster)
-      cluster
-    end
+      @tiles_x_y.each do |tile|
+        x = tile[0]
+        y = tile[1]
 
-    # @param todo [Array] The points to visit.
-    # @param cluster [Array] The cluster of points.
-    def broad_search!(todo, cluster) # rubocop:disable Metrics/CyclomaticComplexity
-      until todo.empty?
-        point = todo.pop
-        neighbors = neighbor_points(*point)
-        neighbors_up_down_left_right?(neighbors) && @cluster_tiles.add(point)
-        neighbors.each do |neighbor|
-          next if visited?(neighbor[0], neighbor[1])
-          next unless @tiles_x_y.include?(neighbor)
+        row = index[y]
 
-          visit!(*neighbor) && todo.push(neighbor) && cluster.push(neighbor)
+        if row
+          row[x] = tile
+        else
+          index[y] = { x => tile }
         end
       end
+
+      index
     end
 
-    # @param x [Integer] The x coordinate of the point.
-    # @param y [Integer] The y coordinate of the point.
-    # @return [Boolean] True if the point is visited.
-    def visit!(x, y)
-      @visited[x] ||= {}
-      @visited[x][y] = true
-    end
+    def broad_search!(todo, cluster, cluster_tiles, tile_index) # rubocop:disable Metrics/AbcSize,Metrics/CyclomaticComplexity,Metrics/MethodLength,Metrics/PerceivedComplexity
+      until todo.empty?
+        point = todo.pop
 
-    # @param x [Integer] The x coordinate of the point.
-    # @param y [Integer] The y coordinate of the point.
-    # @return [Boolean|Nil] True if the point is visited.
-    def visited?(x, y)
-      @visited.dig(x, y)
-    end
+        x = point[0]
+        y = point[1]
 
-    # @param neighbors [Array] The neighbors of the point.
-    # @return [Boolean] True if all neighbors are in the tiles_x_y.
-    def neighbors_up_down_left_right?(neighbors)
-      neighbors.all? { |n| @tiles_x_y.include?(n) }
-    end
+        row = tile_index[y]
 
-    # @param x [Integer] The x coordinate of the point.
-    # @param y [Integer] The y coordinate of the point.
-    # @return [Array<Array<Integer, Integer>>] The neighbors of the point.
-    def neighbor_points(x, y)
-      [[x - 1, y], [x + 1, y], [x, y + 1], [x, y - 1]]
+        left_x = x - 1
+        right_x = x + 1
+
+        left = row.fetch(left_x, MISSING)
+        right = row.fetch(right_x, MISSING)
+
+        down_row = tile_index[y + 1]
+        up_row = tile_index[y - 1]
+
+        down = down_row ? down_row.fetch(x, MISSING) : MISSING
+        up = up_row ? up_row.fetch(x, MISSING) : MISSING
+
+        if !left.equal?(MISSING) &&
+           !right.equal?(MISSING) &&
+           !down.equal?(MISSING) &&
+           !up.equal?(MISSING)
+          cluster_tiles.add(point)
+        end
+
+        if left && !left.equal?(MISSING)
+          row[left_x] = nil
+          todo << left
+          cluster << left
+        end
+
+        if right && !right.equal?(MISSING)
+          row[right_x] = nil
+          todo << right
+          cluster << right
+        end
+
+        if down && !down.equal?(MISSING)
+          down_row[x] = nil
+          todo << down
+          cluster << down
+        end
+
+        next unless up && !up.equal?(MISSING)
+
+        up_row[x] = nil
+        todo << up
+        cluster << up
+      end
     end
   end
 end
