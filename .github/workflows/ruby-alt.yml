@@ -19,8 +19,8 @@ jobs:
       matrix:
         ruby:
           - "jruby-head"
-          - "jruby-9.4"
-          - "truffleruby-24.1.1"
+          - "jruby-10"
+          - "truffleruby-34"
           - "truffleruby-head"
           - "truffleruby+graalvm-head"
 

@@ -61,4 +61,30 @@ class MaxSquareTest < Test::Unit::TestCase
     assert_equal(23, result[:top_left_tile_x_y].length)
     assert(result[:top_left_tile_x_y].include?([11, 1]))
   end
+
+  def test_filled_five_by_five
+    SlippyTilesScorer::TestHelper.stub_tiles_x_y(
+      service: @service_max_square,
+      size: 5
+    )
+
+    result = @service_max_square.max_squares
+
+    assert_equal(5, result[:size])
+    assert_equal(Set[[0, 0]], result[:top_left_tile_x_y])
+  end
+
+  def test_missing_interior_tile_breaks_five_by_five
+    SlippyTilesScorer::TestHelper.stub_tiles_x_y(
+      service: @service_max_square,
+      size: 5
+    )
+
+    @service_max_square.tiles_x_y.delete([2, 2])
+
+    result = @service_max_square.max_squares(min_size: 2)
+
+    assert_equal(2, result[:size])
+    assert_equal(12, result[:top_left_tile_x_y].size)
+  end
 end
