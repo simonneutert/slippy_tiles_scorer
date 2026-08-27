@@ -1,5 +1,6 @@
 require:
   - rubocop-rake
+plugins:
   - rubocop-performance
 
 AllCops:

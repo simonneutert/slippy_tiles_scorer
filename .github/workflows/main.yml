@@ -15,9 +15,8 @@ jobs:
       fail-fast: false
       matrix:
         ruby:
-          - "head"
-          - "3.3"
-          - "3.2" 
+          - "4.0"
+          - "3.4"
 
     steps:
       - uses: actions/checkout@v4

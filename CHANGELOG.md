@@ -1,5 +1,6 @@
 ## [Unreleased]
 
+- [#5](https://github.com/simonneutert/slippy_tiles_scorer/pull/5) - Reworks maximum-square detection with a sparse dynamic-programming algorithm. Adds validation for negative coordinates and minimum square sizes, and expands coverage for multiple and incomplete squares.
 - [#4](https://github.com/simonneutert/slippy_tiles_scorer/pull/4) - Runs a benchmark before running the tests.
 - [#3](https://github.com/simonneutert/slippy_tiles_scorer/pull/3) - 100 % test coverage: lines and branches. Adds a badge to the README. Adds gem release notes to the README.
 

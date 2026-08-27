@@ -50,9 +50,9 @@ class MainTest < Test::Unit::TestCase # rubocop:disable Metrics/ClassLength
     @service.tiles_x_y.delete([5, 5])
 
     assert(@service.send(:steps_fulfilled?, x: 0, y: 0, steps: 2))
-    assert(@service.send(:steps_fulfilled?, x:  0, y: 0, steps: 3))
-    assert(@service.send(:steps_fulfilled?, x:  0, y: 0, steps: 4))
-    refute(@service.send(:steps_fulfilled?, x:  0, y: 0, steps: 5))
+    assert(@service.send(:steps_fulfilled?, x: 0, y: 0, steps: 3))
+    assert(@service.send(:steps_fulfilled?, x: 0, y: 0, steps: 4))
+    refute(@service.send(:steps_fulfilled?, x: 0, y: 0, steps: 5))
   end
 
   def test_max_steps_collection_with_holes
@@ -205,6 +205,6 @@ class MainTest < Test::Unit::TestCase # rubocop:disable Metrics/ClassLength
       tile_scorer.max_squares(tiles_x_y: cluster)
     end
     max_squares_max_size = max_squares_of_clusters.map { |max_square| max_square[:size] }.max
-    assert_equal(1, (max_squares_of_clusters.select { |max_square| max_square[:size] == max_squares_max_size }).size)
+    assert_equal(1, max_squares_of_clusters.count { |max_square| max_square[:size] == max_squares_max_size })
   end
 end
