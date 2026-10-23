@@ -6,7 +6,7 @@ source "https://rubygems.org"
 gemspec
 
 gem "benchmark", "~> 0.4.0", require: false
-gem "json", "~> 2.8"
+gem "json", "~> 3"
 gem "rake", "~> 13.2"
 gem "rubocop", "~> 1.69", require: false
 gem "rubocop-performance", "~> 1.23", require: false
