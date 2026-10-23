@@ -1,2 +1,9 @@
 [tools]
 ruby = "4"
+
+[tasks.lock-bundler]
+description = "Lock the Gemfile.lock file"
+run = [
+    "BUNDLE_GEMFILE=Gemfile.alt-legacy bundle update --all",
+    "BUNDLE_GEMFILE=Gemfile bundle update --all"
+]
