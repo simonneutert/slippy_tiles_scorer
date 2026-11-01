@@ -8,7 +8,7 @@ gemspec
 gem "benchmark", "~> 0.5.0", require: false
 gem "json", "~> 3"
 gem "rake", "~> 13.2"
-gem "rubocop", "~> 1.69", require: false
+gem "rubocop", "~> 1.92", require: false
 gem "rubocop-performance", "~> 1.23", require: false
 gem "rubocop-rake", "~> 0.7.0", require: false
 gem "simplecov", "~> 0.22.0", require: false
